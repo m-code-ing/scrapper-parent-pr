@@ -1,32 +1,12 @@
 import fetch from 'node-fetch';
 import cheerio from 'cheerio';
 
-async function findTextOnPage(url: string, searchText: string): Promise<boolean> {
-  try {
-    const response = await fetch(url);
-    const body = await response.text();
-    const $ = cheerio.load(body);
+export async function findTextOnPage(url: string, text: string): Promise<boolean> {
+  const response = await fetch(url);
+  const body = await response.text();
 
-    if ($('body').text().includes(searchText)) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
+  const $ = cheerio.load(body);
+  const found = $('body:contains("' + text + '")').length > 0;
+
+  return found;
 }
-
-// Example usage:
-
-const url = "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/family-sponsorship/sponsor-parents-grandparents/tell-us-you-want-sponsor-parent-grandparent.html"
-
-const targetText = "We aren’t accepting"
-findTextOnPage(url, targetText)
-  .then(foundText => {
-    console.log(`Text found: ${foundText}`);
-  })
-  .catch(error => {
-    console.error(error);
-  });
