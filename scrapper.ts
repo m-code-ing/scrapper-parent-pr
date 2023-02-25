@@ -19,7 +19,11 @@ async function findTextOnPage(url: string, searchText: string): Promise<boolean>
 }
 
 // Example usage:
-findTextOnPage('https://www.example.com', 'Hello World!')
+
+const url = "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/family-sponsorship/sponsor-parents-grandparents/tell-us-you-want-sponsor-parent-grandparent.html"
+
+const targetText = "We aren’t accepting"
+findTextOnPage(url, targetText)
   .then(foundText => {
     console.log(`Text found: ${foundText}`);
   })
